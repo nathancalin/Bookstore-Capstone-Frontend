@@ -2,6 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { fetchBooks, fetchCategories } from "../services/bookService";
 import cartService from "../services/cartService";
+import "../styles/global.css";
+
 
 
 const BookCatalog = () => {
@@ -72,7 +74,7 @@ const BookCatalog = () => {
   );
 
   return (
-    <div>
+    <div className="container">
       <h2>Book Catalog</h2>
       <input
         type="text"
@@ -80,7 +82,7 @@ const BookCatalog = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <div>
+      <div className="category-buttons">
         <button onClick={() => handleCategoryFilter(null)}>All Categories</button>
         {categories.map(category => (
           <button key={category.id} onClick={() => handleCategoryFilter(category.id)}>
@@ -88,11 +90,11 @@ const BookCatalog = () => {
           </button>
         ))}
       </div>
-      <div>
+      <div className="book-grid">
         {filteredBooks.map((book) => {
           console.log("Rendering book:", book); // Debugging
           return (
-            <div key={book.id}>
+            <div key={book.id} className="book-card">
               <h3>{book.title}</h3>
               <p>Author: {book.author}</p>
               <p>Category: {book.category?.name || "Unknown"}</p>

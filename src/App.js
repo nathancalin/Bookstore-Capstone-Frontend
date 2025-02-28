@@ -5,7 +5,6 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import BookCatalog from "./pages/BookCatalog";
 import CartPage from "./pages/CartPage";
-import CheckoutPage from "./pages/CheckoutPage";
 import OrdersPage from "./pages/OrdersPage";
 import Layout from "./components/Layout"; // Import Layout
 
@@ -35,14 +34,7 @@ function App() {
               </Layout>
             }
           />
-          <Route
-            path="/checkout"
-            element={
-              <Layout>
-                <CheckoutPage />
-              </Layout>
-            }
-          />
+
           <Route
             path="/orders"
             element={

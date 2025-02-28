@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "../styles/global.css"; // Ensure styles are applied
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -11,16 +12,14 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-blue-600 p-4 flex justify-between items-center text-white">
-      <div className="text-xl font-bold">
-        <Link to="/catalog" className="hover:underline">BookStore</Link>
+    <nav className="navbar">
+      <div className="logo">
+        <Link to="/catalog">BookStore</Link>
       </div>
-      <div className="space-x-4">
-        <Link to="/cart" className="hover:underline">Cart</Link>
-        <Link to="/orders" className="hover:underline">Orders</Link>
-        <button onClick={handleLogout} className="bg-red-500 px-4 py-2 rounded hover:bg-red-700">
-          Logout
-        </button>
+      <div className="nav-links">
+        <Link to="/cart">Cart</Link>
+        <Link to="/orders">Orders</Link>
+        <button onClick={handleLogout} className="logout-btn">Logout</button>
       </div>
     </nav>
   );

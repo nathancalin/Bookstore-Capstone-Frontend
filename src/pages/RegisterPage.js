@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import "../styles/global.css";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -22,17 +23,19 @@ const RegisterPage = () => {
     e.preventDefault();
     const response = await registerUser(formData);
 
-    if (response) {
+    if (response.success) {
       setMessage("Registration successful! Redirecting to login...");
-      setFormData({ firstName: "", lastName: "", username: "", email: "", password: "" }); // Clear form
-      setTimeout(() => navigate("/"), 1000); // Redirect to Login ("/")
+      setFormData({ firstName: "", lastName: "", username: "", email: "", password: "" });
+      setTimeout(() => navigate("/"), 1000);
     } else {
-      setMessage("Registration failed. Try again.");
+      setMessage(response.message); // Show correct error message
     }
   };
 
+
+
   return (
-    <div>
+    <div className="container">
       <h2>Register</h2>
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>

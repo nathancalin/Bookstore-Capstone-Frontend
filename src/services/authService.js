@@ -16,9 +16,21 @@ export const login = async (credentials) => {
 export const register = async (userData) => {
   try {
     const response = await axios.post(`${API_URL}/register`, userData);
-    return response.data;
+    return { success: true, data: response.data }; // Registration successful
   } catch (error) {
     console.error("Registration failed", error);
-    return null;
+
+    // Check if error response exists
+    let errorMessage = "Registration failed";
+    if (error.response) {
+      if (error.response.status === 400) {
+        errorMessage = error.response.data.message || "Invalid registration details";
+      } else if (error.response.status === 409) {
+        errorMessage = "Username or email already exists";
+      }
+    }
+
+    return { success: false, message: errorMessage }; // Return actual error message
   }
 };
+

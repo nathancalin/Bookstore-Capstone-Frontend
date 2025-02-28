@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 import cartService from "../services/cartService";
+import orderService from "../services/orderService";
+import "../styles/global.css";
+
+
 
 const CartPage = () => {
     const [cart, setCart] = useState(null);
@@ -22,6 +26,19 @@ const CartPage = () => {
         });
     };
 
+    const handleCheckout = async () => {
+        if (window.confirm("Are you sure you want to checkout?")) {
+            try {
+                await orderService.checkout();
+                alert("Order placed successfully!");
+                window.location.href = "/catalog"; // Redirect to home
+            } catch (error) {
+                console.error("Checkout failed:", error);
+                alert("Checkout failed. Please try again.");
+            }
+        }
+    };
+
     const handleRemoveItem = (itemId) => {
         cartService.removeCartItem(itemId).then(() => {
             setCart((prevCart) => ({
@@ -34,7 +51,7 @@ const CartPage = () => {
     if (!cart) return <p>Loading cart...</p>;
 
     return (
-        <div>
+        <div className="container">
             <h2>Shopping Cart</h2>
             {cart.cartItems.length === 0 ? (
                 <p>Your cart is empty.</p>
@@ -49,6 +66,10 @@ const CartPage = () => {
                         </li>
                     ))}
                 </ul>
+            )}
+
+            {cart.cartItems.length > 0 && (
+                <button onClick={handleCheckout}>Checkout</button>
             )}
         </div>
     );
