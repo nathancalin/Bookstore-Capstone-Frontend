@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { fetchBooks, fetchCategories } from "../services/bookService";
+import cartService from "../services/cartService";
+
 
 const BookCatalog = () => {
   const { token } = useContext(AuthContext);
@@ -43,28 +45,25 @@ const BookCatalog = () => {
   };
 
   const handleAddToCart = async (bookId) => {
-    if (!token) {
-      alert("You need to be logged in to add books to the cart.");
-      return;
-    }
-    try {
-      const response = await fetch("http://localhost:8080/cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ bookId }),
-      });
+      try {
+          const token = localStorage.getItem("token");
+          if (!token) {
+              console.error("No token found. User might not be logged in.");
+              alert("Please log in to add items to your cart.");
+              return;
+          }
 
-      if (!response.ok) throw new Error("Failed to add book to cart");
+          const response = await cartService.addCartItem(bookId);
 
-      alert("Book added to cart!");
-    } catch (error) {
-      console.error(error);
-      alert("Error adding book to cart. Please try again.");
-    }
+          console.log("Book added to cart:", response);
+          alert("Book added to cart!");
+      } catch (error) {
+          console.error("Error adding book to cart:", error);
+          alert("Failed to add book to cart. Please try again.");
+      }
   };
+
+
 
 
   const filteredBooks = books.filter((book) =>
